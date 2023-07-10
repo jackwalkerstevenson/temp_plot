@@ -7,10 +7,12 @@ library(ggprism) # for pretty theme
 source("R/import.R")
 input_file_path <- "input/07081226.TXT"
 data <- import_temp(input_file_path)
+# helper timestamp function-----------------------------------------------
+get_timestamp <- function(){format(Sys.time(), "%Y-%m-%dT%H%M%S")}
 # plot-----------------------------------------------
 data |>
   group_by(channel) |> 
-ggplot(aes(x = datetime, y = fahrenheit, color = channel)) +
+  ggplot(aes(x = datetime, y = temp_celsius, color = channel)) +
   geom_point(size = 1) +
   geom_line() +
   scale_x_datetime(minor_breaks = breaks_width("1 hour"),
@@ -27,4 +29,6 @@ ggplot(aes(x = datetime, y = fahrenheit, color = channel)) +
                                         linewidth = 0.1,
                                         linetype = "dotted"),
         legend.title = element_text()) + # restore legend title
-  labs(x = "time", y = "temperature (F)")
+  labs(x = "time", y = "temperature (C)")
+ggsave(str_glue("temp_plot_{get_timestamp()}.pdf"),
+       width = 14, height = 6)
