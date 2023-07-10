@@ -12,6 +12,7 @@ import_temp <- function(input_file_path){
     mutate(datetime = lubridate::as_date(date) + lubridate::hms(time)) |> 
     # pivot channels into values in a column
     pivot_longer(cols = c("1ch", "2ch", "3ch", "4ch"), names_to = "channel") |> 
+    rename(temp_celsius = value) |> 
     mutate(channel = channel_names[channel], # rename channels
-           fahrenheit = value * 1.8 + 32)
+           temp_fahrenheit = temp_celsius * 1.8 + 32)
 }
