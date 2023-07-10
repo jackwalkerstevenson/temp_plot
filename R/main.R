@@ -1,8 +1,8 @@
 # load required libraries
 library(tidyverse)
-library(scales)
-library(viridis)
-library(ggprism)
+library(scales) # for axis breaks
+library(viridis) # for coloring
+library(ggprism) # for pretty theme
 # import data-----------------------------------------------
 source("R/import.R")
 input_file_path <- "input/07081226.TXT"
@@ -17,13 +17,14 @@ ggplot(aes(x = datetime, y = fahrenheit, color = channel)) +
                    date_labels = "%Y-%m-%d %H:%M",
                    guide = guide_prism_minor())+
                    # expand = expansion(mult = c(0, 0.05))) +
-  scale_y_continuous(breaks = breaks_width(10)) +
+  scale_y_continuous(breaks = breaks_width(10)) + # 10-degree axis ticks
   scale_color_viridis(option = "turbo", discrete = TRUE,
                       begin = 0.9, end = 0.1) +
   theme_prism() +
+  # set grid lines
   theme(panel.grid = element_line(color = "black", linewidth = 0.5),
         panel.grid.minor = element_line(color = "black",
                                         linewidth = 0.1,
                                         linetype = "dotted"),
-        legend.title = element_text()) +
+        legend.title = element_text()) + # restore legend title
   labs(x = "time", y = "temperature (F)")

@@ -8,8 +8,10 @@ channel_names <- c(
 # import function-----------------------------------------------
 import_temp <- function(input_file_path){
   readr::read_table(input_file_path) |>
+    # convert date and time from text to datetime
     mutate(datetime = lubridate::as_date(date) + lubridate::hms(time)) |> 
+    # pivot channels into values in a column
     pivot_longer(cols = c("1ch", "2ch", "3ch", "4ch"), names_to = "channel") |> 
-    mutate(channel = channel_names[channel],
+    mutate(channel = channel_names[channel], # rename channels
            fahrenheit = value * 1.8 + 32)
 }
